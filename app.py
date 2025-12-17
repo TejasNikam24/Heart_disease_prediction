@@ -88,6 +88,7 @@ with col2:
 st.markdown('</div>', unsafe_allow_html=True)
 
 # ---------------- PREDICTION ----------------
+# ---------------- PREDICTION ----------------
 if st.button("🔍 Predict Heart Disease Risk"):
 
     raw_input = {
@@ -116,12 +117,13 @@ if st.button("🔍 Predict Heart Disease Risk"):
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-  if prediction == 1:
-    st.error("""⚠️ **High Risk of Heart Disease**
+    if prediction == 1:
+        st.error("""⚠️ **High Risk of Heart Disease**
 Please consult a medical professional.""")
-else:
-    st.success("""✅ **Low Risk of Heart Disease**
+    else:
+        st.success("""✅ **Low Risk of Heart Disease**
 Keep maintaining a healthy lifestyle!""")
+
 
 # ---------------- FOOTER ----------------
 st.markdown(
