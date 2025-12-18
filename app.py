@@ -13,15 +13,15 @@ st.set_page_config(
 )
 
 # -------------------------------------------------
-# MODERN CSS (EXTRA BAR REMOVED)
+# CSS (CLEAN – NO HARD OVERRIDES)
 # -------------------------------------------------
 st.markdown("""
 <style>
 
-/* -------- BACKGROUND -------- */
+/* BACKGROUND */
 .stApp {
     background:
-        linear-gradient(rgba(2,6,23,0.92), rgba(2,6,23,0.92)),
+        linear-gradient(rgba(2,6,23,0.9), rgba(2,6,23,0.9)),
         url("https://images.unsplash.com/photo-1580281657521-6f9c3c58a6b1");
     background-size: cover;
     background-position: center;
@@ -29,19 +29,18 @@ st.markdown("""
     font-family: 'Inter', 'Segoe UI', sans-serif;
 }
 
-/* -------- HEADER CARD -------- */
+/* HEADER CARD */
 .header-card {
     background: linear-gradient(90deg, #0f172a, #1e40af, #0ea5e9);
     border-radius: 22px;
-    padding: 30px 24px;
-    margin: 30px 0 20px 0;
-    box-shadow: 0 25px 55px rgba(14,165,233,0.45);
-    animation: fadeDown 0.9s ease;
+    padding: 28px 24px;
+    margin: 25px 0 35px 0;
+    box-shadow: 0 22px 50px rgba(14,165,233,0.45);
 }
 
 .header-card h1 {
     text-align: center;
-    font-size: 42px;
+    font-size: 40px;
     font-weight: 900;
     color: #ffffff;
     margin-bottom: 6px;
@@ -53,74 +52,59 @@ st.markdown("""
     color: #bae6fd;
 }
 
-/* -------- FORM CARD -------- */
+/* FORM CARD */
 .form-card {
     background: rgba(255,255,255,0.12);
     backdrop-filter: blur(18px);
     border-radius: 22px;
-    padding: 32px;
-    margin-top: 10px;
-    box-shadow: 0 30px 65px rgba(0,0,0,0.45);
-    animation: fadeUp 0.8s ease;
+    padding: 30px;
+    box-shadow: 0 28px 65px rgba(0,0,0,0.45);
 }
 
-/* -------- FORM TITLE -------- */
+/* TITLE */
 .form-title {
-    font-size: 21px;
+    font-size: 20px;
     font-weight: 800;
     color: #e5f0ff;
-    margin-bottom: 26px;
+    margin-bottom: 22px;
     border-left: 5px solid #38bdf8;
     padding-left: 14px;
 }
 
-/* -------- INPUT LABEL -------- */
+/* LABELS */
 label {
     color: #e5e7eb !important;
     font-weight: 600;
 }
 
-/* -------- BUTTON -------- */
+/* BUTTON */
 .stButton > button {
     width: 100%;
-    height: 60px;
-    border-radius: 18px;
-    font-size: 19px;
+    height: 58px;
+    border-radius: 16px;
+    font-size: 18px;
     font-weight: 700;
     background: linear-gradient(90deg, #2563eb, #0ea5e9);
     color: white;
     border: none;
-    transition: all 0.35s ease;
 }
-
 .stButton > button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 18px 45px rgba(14,165,233,0.7);
-}
-
-/* -------- ANIMATIONS -------- */
-@keyframes fadeUp {
-    from { opacity: 0; transform: translateY(25px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fadeDown {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
+    box-shadow: 0 16px 40px rgba(14,165,233,0.6);
+    transform: translateY(-2px);
 }
 
 </style>
 """, unsafe_allow_html=True)
 
 # -------------------------------------------------
-# LOAD MODEL FILES
+# LOAD MODEL
 # -------------------------------------------------
 model = joblib.load("knn_heart_model.pkl")
 scaler = joblib.load("heart_scaler.pkl")
 expected_columns = joblib.load("heart_columns.pkl")
 
 # -------------------------------------------------
-# HEADER (ONLY ONE – NO EXTRA BAR)
+# HEADER
 # -------------------------------------------------
 st.markdown("""
 <div class="header-card">
@@ -130,7 +114,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # -------------------------------------------------
-# INPUT FORM (DIRECTLY BELOW HEADER)
+# FORM
 # -------------------------------------------------
 st.markdown('<div class="form-card">', unsafe_allow_html=True)
 st.markdown('<div class="form-title">Patient Medical Information</div>', unsafe_allow_html=True)
@@ -155,7 +139,7 @@ with col2:
 st.markdown('</div>', unsafe_allow_html=True)
 
 # -------------------------------------------------
-# PREDICTION (NO PANEL / NO BAR)
+# PREDICTION
 # -------------------------------------------------
 if st.button("Analyze Heart Health"):
 
@@ -176,19 +160,19 @@ if st.button("Analyze Heart Health"):
             'ST_Slope_' + st_slope: 1
         }
 
-        input_df = pd.DataFrame([raw_input])
+        df = pd.DataFrame([raw_input])
         for col in expected_columns:
-            if col not in input_df.columns:
-                input_df[col] = 0
+            if col not in df.columns:
+                df[col] = 0
 
-        input_df = input_df[expected_columns]
-        scaled_input = scaler.transform(input_df)
+        df = df[expected_columns]
+        scaled = scaler.transform(df)
 
-        prediction = model.predict(scaled_input)[0]
-        probability = model.predict_proba(scaled_input)[0][1] * 100
+        prediction = model.predict(scaled)[0]
+        prob = model.predict_proba(scaled)[0][1] * 100
 
-    st.metric("Estimated Heart Disease Risk", f"{probability:.2f}%")
-    st.progress(int(probability))
+    st.metric("Estimated Heart Disease Risk", f"{prob:.2f}%")
+    st.progress(int(prob))
 
     if prediction == 1:
         st.error("⚠️ High risk detected. Please consult a medical professional.")
@@ -199,7 +183,7 @@ if st.button("Analyze Heart Health"):
 # FOOTER
 # -------------------------------------------------
 st.markdown(
-    "<p style='text-align:center; color:#94a3b8; margin-top:30px;'>"
+    "<p style='text-align:center; color:#94a3b8; margin-top:25px;'>"
     "HeartCare AI • AI-powered clinical decision support system</p>",
     unsafe_allow_html=True
 )
