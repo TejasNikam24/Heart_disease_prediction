@@ -13,47 +13,70 @@ st.set_page_config(
 )
 
 # -------------------------------------------------
-# PREMIUM CSS (OFFICIAL HEALTH-TECH STYLE)
+# PREMIUM ENTERPRISE CSS
 # -------------------------------------------------
 st.markdown("""
 <style>
 
-/* ---- GLOBAL BACKGROUND ---- */
+/* ---- BACKGROUND IMAGE ---- */
 .stApp {
-    background: linear-gradient(135deg, #020617, #020617, #0f172a);
+    background:
+        linear-gradient(rgba(2,6,23,0.85), rgba(2,6,23,0.85)),
+        url("https://images.unsplash.com/photo-1580281657521-6f9c3c58a6b1");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
     font-family: 'Inter', sans-serif;
 }
 
 /* ---- HERO ---- */
-.hero-title {
-    font-size: 44px;
-    font-weight: 800;
+.hero {
     text-align: center;
-    color: #f8fafc;
-    margin-top: 10px;
+    margin-bottom: 45px;
+    animation: fadeDown 1s ease;
 }
-.hero-subtitle {
-    text-align: center;
+.hero h1 {
+    font-size: 46px;
+    font-weight: 800;
+    color: #f8fafc;
+}
+.hero p {
     color: #cbd5e1;
     font-size: 16px;
-    margin-bottom: 45px;
 }
 
-/* ---- GLASS CARD ---- */
-.card {
-    background: rgba(255, 255, 255, 0.10);
+/* ---- GLASS PANEL ---- */
+.panel {
+    background: rgba(255, 255, 255, 0.12);
     backdrop-filter: blur(18px);
-    border-radius: 18px;
-    padding: 28px;
-    margin-bottom: 28px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.4);
-    animation: fadeSlide 0.9s ease;
+    -webkit-backdrop-filter: blur(18px);
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.45);
+    animation: fadeUp 0.9s ease;
+}
+
+/* ---- PANEL TITLE ---- */
+.panel-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #e5e7eb;
+    margin-bottom: 20px;
+    border-left: 4px solid #2563eb;
+    padding-left: 12px;
+}
+
+/* ---- LABELS ---- */
+label {
+    color: #e5e7eb !important;
+    font-weight: 600;
 }
 
 /* ---- BUTTON ---- */
 .stButton > button {
     width: 100%;
-    height: 56px;
+    height: 58px;
     border-radius: 14px;
     font-size: 18px;
     font-weight: 600;
@@ -63,29 +86,18 @@ st.markdown("""
     transition: all 0.35s ease;
 }
 .stButton > button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 30px rgba(37,99,235,0.6);
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(37,99,235,0.6);
 }
 
-/* ---- TEXT ---- */
-label {
-    color: #e5e7eb !important;
-    font-weight: 600;
+/* ---- ANIMATIONS ---- */
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
 }
-h3 {
-    color: #f1f5f9;
-}
-
-/* ---- ANIMATION ---- */
-@keyframes fadeSlide {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+@keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 </style>
@@ -101,20 +113,20 @@ expected_columns = joblib.load("heart_columns.pkl")
 # -------------------------------------------------
 # HERO SECTION
 # -------------------------------------------------
-st.markdown('<div class="hero-title">🫀 HeartCare AI</div>', unsafe_allow_html=True)
-st.markdown(
-    '<div class="hero-subtitle">Clinical-grade AI system for early heart disease risk assessment</div>',
-    unsafe_allow_html=True
-)
+st.markdown("""
+<div class="hero">
+    <h1>🫀 HeartCare AI</h1>
+    <p>Advanced clinical intelligence for early heart disease risk assessment</p>
+</div>
+""", unsafe_allow_html=True)
 
 # -------------------------------------------------
-# INPUT CARD
+# PATIENT DETAILS PANEL
 # -------------------------------------------------
-st.markdown('<div class="card">', unsafe_allow_html=True)
-st.subheader("Patient Health Information")
+st.markdown('<div class="panel">', unsafe_allow_html=True)
+st.markdown('<div class="panel-title">Patient Information</div>', unsafe_allow_html=True)
 
 col1, col2 = st.columns(2)
-
 with col1:
     age = st.slider("Age", 18, 100, 40)
     sex = st.selectbox("Sex", ["M", "F"])
@@ -133,12 +145,12 @@ with col2:
 st.markdown('</div>', unsafe_allow_html=True)
 
 # -------------------------------------------------
-# PREDICTION
+# PREDICTION PANEL
 # -------------------------------------------------
-if st.button("Analyze Heart Risk"):
+if st.button("Analyze Heart Health"):
 
-    with st.spinner("Processing clinical data..."):
-        time.sleep(1.2)
+    with st.spinner("Analyzing clinical parameters..."):
+        time.sleep(1.4)
 
         raw_input = {
             'Age': age,
@@ -165,21 +177,16 @@ if st.button("Analyze Heart Risk"):
         prediction = model.predict(scaled_input)[0]
         probability = model.predict_proba(scaled_input)[0][1] * 100
 
-    # -------------------------------------------------
-    # RESULT CARD
-    # -------------------------------------------------
-    st.markdown('<div class="card">', unsafe_allow_html=True)
-    st.subheader("AI Risk Assessment")
+    st.markdown('<div class="panel">', unsafe_allow_html=True)
+    st.markdown('<div class="panel-title">AI Risk Assessment</div>', unsafe_allow_html=True)
 
-    st.metric("Estimated Heart Disease Risk", f"{probability:.2f}%")
+    st.metric("Estimated Risk Level", f"{probability:.2f}%")
     st.progress(int(probability))
 
     if prediction == 1:
-        st.error("""High risk detected.
-Please seek professional medical consultation.""")
+        st.error("High risk detected. Medical consultation is advised.")
     else:
-        st.success("""Low risk detected.
-Continue maintaining a healthy lifestyle.""")
+        st.success("Low risk detected. Maintain a healthy lifestyle.")
 
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -188,6 +195,6 @@ Continue maintaining a healthy lifestyle.""")
 # -------------------------------------------------
 st.markdown(
     "<p style='text-align:center; color:#94a3b8;'>"
-    "HeartCare AI • Built with Machine Learning & Streamlit</p>",
+    "HeartCare AI • Clinical Decision Support System</p>",
     unsafe_allow_html=True
 )
