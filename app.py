@@ -13,15 +13,15 @@ st.set_page_config(
 )
 
 # -------------------------------------------------
-# MODERN CSS (NO EMPTY BARS)
+# MODERN CSS (EXTRA BAR REMOVED)
 # -------------------------------------------------
 st.markdown("""
 <style>
 
-/* ---------- BACKGROUND ---------- */
+/* -------- BACKGROUND -------- */
 .stApp {
     background:
-        linear-gradient(rgba(2, 6, 23, 0.92), rgba(2, 6, 23, 0.92)),
+        linear-gradient(rgba(2,6,23,0.92), rgba(2,6,23,0.92)),
         url("https://images.unsplash.com/photo-1580281657521-6f9c3c58a6b1");
     background-size: cover;
     background-position: center;
@@ -29,59 +29,58 @@ st.markdown("""
     font-family: 'Inter', 'Segoe UI', sans-serif;
 }
 
-/* ---------- MAIN HEADER ---------- */
-.main-header {
+/* -------- HEADER CARD -------- */
+.header-card {
     background: linear-gradient(90deg, #0f172a, #1e40af, #0ea5e9);
     border-radius: 22px;
-    padding: 28px 22px;
-    margin: 30px 0 35px 0;
+    padding: 30px 24px;
+    margin: 30px 0 20px 0;
     box-shadow: 0 25px 55px rgba(14,165,233,0.45);
     animation: fadeDown 0.9s ease;
 }
 
-.main-header h1 {
+.header-card h1 {
     text-align: center;
     font-size: 42px;
     font-weight: 900;
     color: #ffffff;
-    letter-spacing: 0.6px;
     margin-bottom: 6px;
 }
 
-.main-header p {
+.header-card p {
     text-align: center;
     font-size: 15px;
     color: #bae6fd;
 }
 
-/* ---------- GLASS CARD ---------- */
-.card {
-    background: rgba(255,255,255,0.13);
+/* -------- FORM CARD -------- */
+.form-card {
+    background: rgba(255,255,255,0.12);
     backdrop-filter: blur(18px);
     border-radius: 22px;
     padding: 32px;
-    margin-bottom: 35px;
+    margin-top: 10px;
     box-shadow: 0 30px 65px rgba(0,0,0,0.45);
     animation: fadeUp 0.8s ease;
 }
 
-/* ---------- CARD TITLE ---------- */
-.card-title {
+/* -------- FORM TITLE -------- */
+.form-title {
     font-size: 21px;
     font-weight: 800;
     color: #e5f0ff;
-    margin-bottom: 24px;
+    margin-bottom: 26px;
     border-left: 5px solid #38bdf8;
     padding-left: 14px;
 }
 
-/* ---------- INPUT LABEL ---------- */
+/* -------- INPUT LABEL -------- */
 label {
     color: #e5e7eb !important;
     font-weight: 600;
 }
 
-/* ---------- BUTTON ---------- */
+/* -------- BUTTON -------- */
 .stButton > button {
     width: 100%;
     height: 60px;
@@ -89,7 +88,7 @@ label {
     font-size: 19px;
     font-weight: 700;
     background: linear-gradient(90deg, #2563eb, #0ea5e9);
-    color: #ffffff;
+    color: white;
     border: none;
     transition: all 0.35s ease;
 }
@@ -99,7 +98,7 @@ label {
     box-shadow: 0 18px 45px rgba(14,165,233,0.7);
 }
 
-/* ---------- ANIMATIONS ---------- */
+/* -------- ANIMATIONS -------- */
 @keyframes fadeUp {
     from { opacity: 0; transform: translateY(25px); }
     to { opacity: 1; transform: translateY(0); }
@@ -114,27 +113,27 @@ label {
 """, unsafe_allow_html=True)
 
 # -------------------------------------------------
-# LOAD MODEL
+# LOAD MODEL FILES
 # -------------------------------------------------
 model = joblib.load("knn_heart_model.pkl")
 scaler = joblib.load("heart_scaler.pkl")
 expected_columns = joblib.load("heart_columns.pkl")
 
 # -------------------------------------------------
-# MAIN HEADING (ONLY ONE)
+# HEADER (ONLY ONE – NO EXTRA BAR)
 # -------------------------------------------------
 st.markdown("""
-<div class="main-header">
+<div class="header-card">
     <h1>🫀 HeartCare AI</h1>
     <p>Advanced clinical intelligence for early heart disease risk assessment</p>
 </div>
 """, unsafe_allow_html=True)
 
 # -------------------------------------------------
-# INPUT CARD
+# INPUT FORM (DIRECTLY BELOW HEADER)
 # -------------------------------------------------
-st.markdown('<div class="card">', unsafe_allow_html=True)
-st.markdown('<div class="card-title">Patient Medical Information</div>', unsafe_allow_html=True)
+st.markdown('<div class="form-card">', unsafe_allow_html=True)
+st.markdown('<div class="form-title">Patient Medical Information</div>', unsafe_allow_html=True)
 
 col1, col2 = st.columns(2)
 
@@ -156,7 +155,7 @@ with col2:
 st.markdown('</div>', unsafe_allow_html=True)
 
 # -------------------------------------------------
-# PREDICTION (NO EXTRA EMPTY BAR)
+# PREDICTION (NO PANEL / NO BAR)
 # -------------------------------------------------
 if st.button("Analyze Heart Health"):
 
