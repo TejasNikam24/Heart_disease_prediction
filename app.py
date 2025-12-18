@@ -184,6 +184,7 @@ if st.button("Analyze Heart Health"):
 # -------------------------------------------------
 st.markdown(
     "<p style='text-align:center; color:#94a3b8; margin-top:25px;'>"
-    "HeartCare AI • AI-powered clinical decision support system</p>",
+    "HeartCare AI • AI-powered/Machine Learning clinical decision support system</p>",
+    "<p>Developed By Tejas Nikam</p>"
     unsafe_allow_html=True
 )
