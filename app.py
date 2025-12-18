@@ -13,7 +13,7 @@ st.set_page_config(
 )
 
 # -------------------------------------------------
-# PREMIUM CSS (BACKGROUND + THEME + ANIMATIONS)
+# CSS (BACKGROUND + THEME)
 # -------------------------------------------------
 st.markdown("""
 <style>
@@ -21,7 +21,7 @@ st.markdown("""
 /* -------- BACKGROUND -------- */
 .stApp {
     background:
-        linear-gradient(rgba(2,6,23,0.88), rgba(2,6,23,0.88)),
+        linear-gradient(rgba(2,6,23,0.9), rgba(2,6,23,0.9)),
         url("https://images.unsplash.com/photo-1580281657521-6f9c3c58a6b1");
     background-size: cover;
     background-position: center;
@@ -29,57 +29,42 @@ st.markdown("""
     font-family: 'Inter', sans-serif;
 }
 
-/* -------- HERO -------- */
-.hero {
-    text-align: center;
-    margin-top: 20px;
-    margin-bottom: 35px;
-    animation: fadeDown 1s ease;
-}
-.hero h1 {
-    font-size: 46px;
-    font-weight: 800;
-    color: #f8fafc;
-}
-.hero p {
-    color: #cbd5e1;
-    font-size: 16px;
+/* -------- MAIN HEADER BAR -------- */
+.main-header {
+    width: 100%;
+    background: linear-gradient(90deg, #1e3a8a, #2563eb, #0ea5e9);
+    border-radius: 20px;
+    padding: 26px 20px;
+    margin-top: 25px;
+    margin-bottom: 45px;
+    box-shadow: 0 20px 45px rgba(37,99,235,0.55);
+    animation: slideDown 1s ease;
 }
 
-/* -------- HEADER BAR -------- */
-.header-bar {
-    width: 100%;
-    background: linear-gradient(90deg, #2563eb, #0ea5e9);
-    border-radius: 18px;
-    padding: 18px 25px;
-    margin: 30px 0 45px 0;
-    box-shadow: 0 18px 40px rgba(37,99,235,0.45);
-    animation: slideIn 0.9s ease;
-}
-.header-title {
-    font-size: 26px;
+.main-header h1 {
+    text-align: center;
+    font-size: 40px;
     font-weight: 800;
     color: #ffffff;
-    text-align: center;
-    letter-spacing: 0.5px;
+    margin-bottom: 6px;
 }
-.header-subtitle {
-    font-size: 14px;
+
+.main-header p {
     text-align: center;
+    font-size: 15px;
     color: #e0f2fe;
-    margin-top: 4px;
+    letter-spacing: 0.3px;
 }
 
 /* -------- GLASS PANEL -------- */
 .panel {
     background: rgba(255, 255, 255, 0.12);
     backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-    border-radius: 20px;
+    border-radius: 22px;
     padding: 30px;
-    margin-bottom: 30px;
-    box-shadow: 0 25px 60px rgba(0,0,0,0.45);
-    animation: fadeUp 0.9s ease;
+    margin-bottom: 35px;
+    box-shadow: 0 30px 70px rgba(0,0,0,0.45);
+    animation: fadeUp 1s ease;
 }
 
 /* -------- PANEL TITLE -------- */
@@ -87,8 +72,8 @@ st.markdown("""
     font-size: 20px;
     font-weight: 700;
     color: #e5e7eb;
-    margin-bottom: 20px;
-    border-left: 4px solid #2563eb;
+    margin-bottom: 22px;
+    border-left: 4px solid #38bdf8;
     padding-left: 12px;
 }
 
@@ -96,17 +81,17 @@ st.markdown("""
 .stButton > button {
     width: 100%;
     height: 58px;
-    border-radius: 14px;
+    border-radius: 16px;
     font-size: 18px;
     font-weight: 600;
     background: linear-gradient(90deg, #2563eb, #0ea5e9);
     color: white;
     border: none;
-    transition: all 0.35s ease;
+    transition: all 0.3s ease;
 }
 .stButton > button:hover {
     transform: translateY(-3px);
-    box-shadow: 0 15px 35px rgba(37,99,235,0.6);
+    box-shadow: 0 18px 40px rgba(37,99,235,0.65);
 }
 
 /* -------- TEXT -------- */
@@ -120,12 +105,8 @@ label {
     from { opacity: 0; transform: translateY(30px); }
     to { opacity: 1; transform: translateY(0); }
 }
-@keyframes fadeDown {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-@keyframes slideIn {
-    from { opacity: 0; transform: translateY(-15px); }
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-25px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
@@ -133,31 +114,19 @@ label {
 """, unsafe_allow_html=True)
 
 # -------------------------------------------------
-# LOAD MODEL
+# LOAD MODEL FILES
 # -------------------------------------------------
 model = joblib.load("knn_heart_model.pkl")
 scaler = joblib.load("heart_scaler.pkl")
 expected_columns = joblib.load("heart_columns.pkl")
 
 # -------------------------------------------------
-# HERO SECTION
+# MAIN HEADER (ONLY ONE HEADING)
 # -------------------------------------------------
 st.markdown("""
-<div class="hero">
+<div class="main-header">
     <h1>🫀 HeartCare AI</h1>
     <p>Advanced clinical intelligence for early heart disease risk assessment</p>
-</div>
-""", unsafe_allow_html=True)
-
-# -------------------------------------------------
-# HEADER BAR
-# -------------------------------------------------
-st.markdown("""
-<div class="header-bar">
-    <div class="header-title">HeartCareAI</div>
-    <div class="header-subtitle">
-        AI-powered cardiovascular risk prediction & clinical decision support
-    </div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -165,9 +134,10 @@ st.markdown("""
 # INPUT PANEL
 # -------------------------------------------------
 st.markdown('<div class="panel">', unsafe_allow_html=True)
-st.markdown('<div class="panel-title">Patient Information</div>', unsafe_allow_html=True)
+st.markdown('<div class="panel-title">Patient Medical Information</div>', unsafe_allow_html=True)
 
 col1, col2 = st.columns(2)
+
 with col1:
     age = st.slider("Age", 18, 100, 40)
     sex = st.selectbox("Sex", ["M", "F"])
@@ -186,12 +156,12 @@ with col2:
 st.markdown('</div>', unsafe_allow_html=True)
 
 # -------------------------------------------------
-# PREDICTION PANEL
+# PREDICTION
 # -------------------------------------------------
 if st.button("Analyze Heart Health"):
 
-    with st.spinner("Analyzing clinical parameters..."):
-        time.sleep(1.4)
+    with st.spinner("AI analysis in progress..."):
+        time.sleep(1.3)
 
         raw_input = {
             'Age': age,
@@ -208,6 +178,7 @@ if st.button("Analyze Heart Health"):
         }
 
         input_df = pd.DataFrame([raw_input])
+
         for col in expected_columns:
             if col not in input_df.columns:
                 input_df[col] = 0
@@ -219,15 +190,15 @@ if st.button("Analyze Heart Health"):
         probability = model.predict_proba(scaled_input)[0][1] * 100
 
     st.markdown('<div class="panel">', unsafe_allow_html=True)
-    st.markdown('<div class="panel-title">AI Risk Assessment</div>', unsafe_allow_html=True)
+    st.markdown('<div class="panel-title">AI Risk Assessment Report</div>', unsafe_allow_html=True)
 
     st.metric("Estimated Heart Disease Risk", f"{probability:.2f}%")
     st.progress(int(probability))
 
     if prediction == 1:
-        st.error("High risk detected. Medical consultation is advised.")
+        st.error("⚠️ High risk detected. Please consult a medical professional immediately.")
     else:
-        st.success("Low risk detected. Maintain a healthy lifestyle.")
+        st.success("✅ Low risk detected. Maintain a healthy lifestyle.")
 
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -236,6 +207,6 @@ if st.button("Analyze Heart Health"):
 # -------------------------------------------------
 st.markdown(
     "<p style='text-align:center; color:#94a3b8;'>"
-    "HeartCare AI • Clinical Decision Support System</p>",
+    "HeartCare AI • AI-powered clinical decision support system</p>",
     unsafe_allow_html=True
 )
