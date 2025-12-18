@@ -7,80 +7,87 @@ import time
 # PAGE CONFIG
 # -------------------------------------------------
 st.set_page_config(
-    page_title="Heart Disease AI",
-    page_icon="❤️",
+    page_title="HeartCare AI",
+    page_icon="🫀",
     layout="centered"
 )
 
 # -------------------------------------------------
-# ADVANCED CSS (BACKGROUND + ANIMATIONS)
+# PREMIUM CSS (OFFICIAL HEALTH-TECH STYLE)
 # -------------------------------------------------
 st.markdown("""
 <style>
 
-/* ---- BACKGROUND ---- */
+/* ---- GLOBAL BACKGROUND ---- */
 .stApp {
     background: linear-gradient(135deg, #020617, #020617, #0f172a);
-    background-attachment: fixed;
+    font-family: 'Inter', sans-serif;
+}
+
+/* ---- HERO ---- */
+.hero-title {
+    font-size: 44px;
+    font-weight: 800;
+    text-align: center;
+    color: #f8fafc;
+    margin-top: 10px;
+}
+.hero-subtitle {
+    text-align: center;
+    color: #cbd5e1;
+    font-size: 16px;
+    margin-bottom: 45px;
 }
 
 /* ---- GLASS CARD ---- */
-.glass {
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    border-radius: 20px;
-    padding: 30px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.35);
-    animation: fadeUp 1s ease-in-out;
-    margin-bottom: 25px;
-}
-
-/* ---- TEXT ---- */
-.title {
-    font-size: 46px;
-    font-weight: 900;
-    text-align: center;
-    color: #f8fafc;
-    animation: glow 2s infinite alternate;
-}
-.subtitle {
-    text-align: center;
-    color: #cbd5f5;
-    margin-bottom: 40px;
+.card {
+    background: rgba(255, 255, 255, 0.10);
+    backdrop-filter: blur(18px);
+    border-radius: 18px;
+    padding: 28px;
+    margin-bottom: 28px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+    animation: fadeSlide 0.9s ease;
 }
 
 /* ---- BUTTON ---- */
 .stButton > button {
     width: 100%;
-    height: 60px;
-    border-radius: 16px;
-    font-size: 20px;
-    font-weight: 700;
-    background: linear-gradient(90deg, #ef4444, #dc2626);
+    height: 56px;
+    border-radius: 14px;
+    font-size: 18px;
+    font-weight: 600;
+    background: linear-gradient(90deg, #2563eb, #0ea5e9);
     color: white;
     border: none;
-    transition: all 0.4s ease;
+    transition: all 0.35s ease;
 }
 .stButton > button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 25px rgba(239,68,68,0.8);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(37,99,235,0.6);
 }
 
-/* ---- ANIMATIONS ---- */
-@keyframes fadeUp {
-    from { opacity: 0; transform: translateY(40px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-@keyframes glow {
-    from { text-shadow: 0 0 10px #ef4444; }
-    to { text-shadow: 0 0 25px #dc2626; }
-}
-
+/* ---- TEXT ---- */
 label {
     color: #e5e7eb !important;
     font-weight: 600;
 }
+h3 {
+    color: #f1f5f9;
+}
+
+/* ---- ANIMATION ---- */
+@keyframes fadeSlide {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -94,32 +101,33 @@ expected_columns = joblib.load("heart_columns.pkl")
 # -------------------------------------------------
 # HERO SECTION
 # -------------------------------------------------
-st.markdown('<div class="title">❤️ Heart Disease AI</div>', unsafe_allow_html=True)
+st.markdown('<div class="hero-title">🫀 HeartCare AI</div>', unsafe_allow_html=True)
 st.markdown(
-    '<div class="subtitle">Next-gen AI system for early heart risk detection</div>',
+    '<div class="hero-subtitle">Clinical-grade AI system for early heart disease risk assessment</div>',
     unsafe_allow_html=True
 )
 
 # -------------------------------------------------
 # INPUT CARD
 # -------------------------------------------------
-st.markdown('<div class="glass">', unsafe_allow_html=True)
-st.subheader("🧠 Health Information")
+st.markdown('<div class="card">', unsafe_allow_html=True)
+st.subheader("Patient Health Information")
 
 col1, col2 = st.columns(2)
+
 with col1:
     age = st.slider("Age", 18, 100, 40)
     sex = st.selectbox("Sex", ["M", "F"])
-    chest_pain = st.selectbox("Chest Pain Type", ["ATA", "NAP", "TA", "ASY"])
-    resting_bp = st.number_input("Resting Blood Pressure", 80, 200, 120)
-    cholesterol = st.number_input("Cholesterol", 100, 600, 200)
+    resting_bp = st.number_input("Resting Blood Pressure (mm Hg)", 80, 200, 120)
+    cholesterol = st.number_input("Cholesterol (mg/dL)", 100, 600, 200)
+    fasting_bs = st.selectbox("Fasting Blood Sugar > 120 mg/dL", [0, 1])
 
 with col2:
-    fasting_bs = st.selectbox("Fasting Blood Sugar > 120", [0, 1])
+    chest_pain = st.selectbox("Chest Pain Type", ["ATA", "NAP", "TA", "ASY"])
     resting_ecg = st.selectbox("Resting ECG", ["Normal", "ST", "LVH"])
     max_hr = st.slider("Max Heart Rate", 60, 220, 150)
-    exercise_angina = st.selectbox("Exercise Angina", ["Y", "N"])
-    oldpeak = st.slider("Oldpeak", 0.0, 6.0, 1.0)
+    exercise_angina = st.selectbox("Exercise-Induced Angina", ["Y", "N"])
+    oldpeak = st.slider("Oldpeak (ST Depression)", 0.0, 6.0, 1.0)
     st_slope = st.selectbox("ST Slope", ["Up", "Flat", "Down"])
 
 st.markdown('</div>', unsafe_allow_html=True)
@@ -127,10 +135,10 @@ st.markdown('</div>', unsafe_allow_html=True)
 # -------------------------------------------------
 # PREDICTION
 # -------------------------------------------------
-if st.button("🚀 Analyze Heart Risk"):
+if st.button("Analyze Heart Risk"):
 
-    with st.spinner("Running AI model..."):
-        time.sleep(1.5)
+    with st.spinner("Processing clinical data..."):
+        time.sleep(1.2)
 
         raw_input = {
             'Age': age,
@@ -158,20 +166,20 @@ if st.button("🚀 Analyze Heart Risk"):
         probability = model.predict_proba(scaled_input)[0][1] * 100
 
     # -------------------------------------------------
-    # RESULT CARD (ANIMATED)
+    # RESULT CARD
     # -------------------------------------------------
-    st.markdown('<div class="glass">', unsafe_allow_html=True)
-    st.subheader("📊 AI Prediction Result")
+    st.markdown('<div class="card">', unsafe_allow_html=True)
+    st.subheader("AI Risk Assessment")
 
-    st.metric("Risk Probability", f"{probability:.2f}%")
+    st.metric("Estimated Heart Disease Risk", f"{probability:.2f}%")
     st.progress(int(probability))
 
     if prediction == 1:
-        st.error("""⚠️ HIGH RISK DETECTED  
-Immediate medical consultation recommended.""")
+        st.error("""High risk detected.
+Please seek professional medical consultation.""")
     else:
-        st.success("""✅ LOW RISK DETECTED  
-Maintain a healthy lifestyle.""")
+        st.success("""Low risk detected.
+Continue maintaining a healthy lifestyle.""")
 
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -180,6 +188,6 @@ Maintain a healthy lifestyle.""")
 # -------------------------------------------------
 st.markdown(
     "<p style='text-align:center; color:#94a3b8;'>"
-    "Built with ❤️ by Tejas | AI + Healthcare</p>",
+    "HeartCare AI • Built with Machine Learning & Streamlit</p>",
     unsafe_allow_html=True
 )
