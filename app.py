@@ -183,10 +183,10 @@ if st.button("Analyze Heart Health"):
 # FOOTER
 st.markdown(
     """
-    <p style='text-align:center; color:#94a3b8; margin-top:25px; font-size:14px;'>
+    <p style='text-align:center; color:#94a3b8; margin-top:30px; font-size:16px; font-weight:600;'>
         HeartCare AI • AI-powered clinical decision support system
     </p>
-    <p style='text-align:center; color:#64748b; margin-top:5px; font-size:13px;'>
+    <p style='text-align:center; color:#64748b; margin-top:6px; font-size:15px;'>
         Machine Learning Project By <strong>Tejas Nikam</strong>
     </p>
     """,
